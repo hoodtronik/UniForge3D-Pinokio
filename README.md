@@ -23,8 +23,12 @@ a browser GUI and a native Windows install (no WSL/Docker).
 2. Click **Install**. It clones upstream into `app/`, creates a Python 3.12 venv, and installs
    torch 2.8 (CUDA 12.8) plus prebuilt Windows CUDA wheels (flash-attn, nvdiffrast, cumesh,
    flex_gemm, o_voxel) from [PozzettiAndrea/cuda-wheels](https://github.com/PozzettiAndrea/cuda-wheels).
-3. When prompted, paste a Hugging Face READ token. It is validated against both gated models and
-   stored locally (`cache/HF_HOME`), never committed. Re-run any time via **Set HF Token**.
+   The install runs unattended. It does not ask for any token.
+4. **Set HF Token** (the highlighted menu item after install): accept both model licenses above,
+   create a READ token at https://huggingface.co/settings/tokens and paste it. It is validated
+   against both gated models and stored locally (`cache/HF_HOME`), never committed.
+5. **Download Models**: fetches all ~20GB of weights up front (otherwise they download on the
+   first Generate). Once done, **Start** becomes the default.
 
 ## Usage
 
@@ -35,7 +39,7 @@ a browser GUI and a native Windows install (no WSL/Docker).
   as a download, and saved to `outputs/<timestamp>_seed<seed>/prediction.glb`.
 - *Settings*: seed (or randomize) and sampler steps for the structure / shape / texture stages.
 
-Menu: Start · Start (Full VRAM) · Set HF Token · Update (pulls launcher + upstream) · Reset (deletes `app/`).
+Menu: Set HF Token · Download Models · Start · Start (Full VRAM) · Update (pulls launcher + upstream) · Reset (deletes `app/`; downloaded models in `cache/` are kept).
 
 ## API
 

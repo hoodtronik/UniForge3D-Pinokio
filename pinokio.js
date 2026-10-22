@@ -6,12 +6,18 @@ module.exports = {
   menu: async (kernel, info) => {
     // CLAUDE-NOTE: "installed" = the Python venv exists at app/env (created by install.js).
     let installed = info.exists("app/env")
+    // CLAUDE-NOTE: post-install setup state. HF_HOME is ./cache/HF_HOME (Pinokio's
+    // per-app ENVIRONMENT default), where huggingface_hub.login() writes `token`.
+    // download_models.py writes the marker once every weight is cached.
+    let has_token = info.exists("cache/HF_HOME/token")
+    let has_models = info.exists("cache/UNIFORGE3D_MODELS_OK")
     let running = {
       install: info.running("install.js"),
       start: info.running("start.js"),
       update: info.running("update.js"),
       reset: info.running("reset.js"),
-      hf_token: info.running("hf_token.js")
+      hf_token: info.running("hf_token.js"),
+      download: info.running("download_models.js")
     }
     if (running.hf_token) {
       return [{
@@ -19,6 +25,14 @@ module.exports = {
         icon: "fa-brands fa-hugging-face",
         text: "Hugging Face login",
         href: "hf_token.js",
+      }]
+    }
+    if (running.download) {
+      return [{
+        default: true,
+        icon: "fa-solid fa-download",
+        text: "Downloading Models",
+        href: "download_models.js",
       }]
     }
     if (running.install) {
@@ -64,8 +78,19 @@ module.exports = {
         }]
       }
     } else if (installed) {
+      // Guide new users: token first, then models, then Start becomes the default.
       return [{
-        default: true,
+        default: !has_token,
+        icon: "fa-brands fa-hugging-face",
+        text: has_token ? "Set HF Token" : "Set HF Token (required)",
+        href: "hf_token.js",
+      }, {
+        default: has_token && !has_models,
+        icon: "fa-solid fa-download",
+        text: has_models ? "Re-download Models" : "Download Models",
+        href: "download_models.js",
+      }, {
+        default: has_token && has_models,
         icon: "fa-solid fa-power-off",
         text: "Start",
         href: "start.js",
@@ -73,10 +98,6 @@ module.exports = {
         icon: "fa-solid fa-bolt",
         text: "Start (Full VRAM, faster)",
         href: "start.js?full_vram=true",
-      }, {
-        icon: "fa-brands fa-hugging-face",
-        text: "Set HF Token",
-        href: "hf_token.js",
       }, {
         icon: "fa-solid fa-plug",
         text: "Update",

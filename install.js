@@ -45,14 +45,9 @@ module.exports = {
           "env\\Scripts\\python.exe ..\\patch_gradio_ssrf.py"
         ]
       }
-    },
-    // 3) Guided Hugging Face token setup (UniForge3D needs the GATED models
-    //    briaai/RMBG-2.0 and facebook/dinov3-vitl16-pretrain-lvd1689m).
-    {
-      method: "script.start",
-      params: {
-        uri: "hf_token.js"
-      }
     }
+    // CLAUDE-NOTE: install deliberately does NOT ask for a Hugging Face token. It finishes
+    // unattended; pinokio.js then surfaces "Set HF Token" -> "Download Models" as the next
+    // default steps (two weights are gated and need per-user license acceptance).
   ]
 }

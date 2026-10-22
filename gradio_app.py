@@ -71,7 +71,16 @@ def generate(files, seed, randomize, ss_steps, shape_steps, tex_steps,
 
     with _lock:
         progress(0, desc="Loading models (first run downloads weights)...")
-        pipe = get_pipeline()
+        try:
+            pipe = get_pipeline()
+        except Exception as e:
+            # CLAUDE-NOTE: gated-model failures are the common first-run error for public
+            # users; point them at the Pinokio menu steps instead of a raw traceback.
+            if "Gated" in type(e).__name__ or "401" in str(e) or "403" in str(e):
+                raise gr.Error("Hugging Face access missing. In Pinokio, run 'Set HF Token' "
+                               "(accept the RMBG-2.0 and DINOv3 licenses first), then "
+                               "'Download Models'.") from e
+            raise
         # CLAUDE-NOTE: the pipeline reads sampler params from self.config on every run,
         # so per-request step overrides are applied by mutating that dict in place.
         cfg = pipe.config

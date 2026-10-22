@@ -2,7 +2,8 @@
 // (briaai/RMBG-2.0 and facebook/dinov3-vitl16-pretrain-lvd1689m), so the app needs an HF
 // token whose account has accepted both licenses. This pops a modal, validates the token
 // via check_hf_token.py, persists it on success, and loops back with an error on failure
-// (a `jump` retry loop instead of crashing). Run by install.js and from the menu.
+// (a `jump` retry loop instead of crashing). Run from the post-install menu; on success
+// pinokio.js makes "Download Models" the next default step.
 module.exports = {
   run: [
     {
@@ -48,7 +49,7 @@ module.exports = {
     {
       method: "local.set",
       when: "{{local.result !== 'HFGATE_OK'}}",
-      params: { err: "⚠️ That token could not access one of the gated models. Make sure the token's account has accepted BOTH model licenses (the DINOv3 request must be approved), and that you pasted a valid READ token, then try again.\n\n" }
+      params: { err: "⚠️ That token could not access one of the gated models. Make sure the token's account has accepted BOTH model licenses (the DINOv3 request must be approved), and that you pasted a valid READ token, then try again. (If DINOv3 access is still pending, close this window and come back via Set HF Token once approved.)\n\n" }
     },
     {
       method: "jump",
