@@ -1,0 +1,24 @@
+node_modules
+.DS_Store
+
+# Cloned upstream UniForge3D app + Python venv (created by install.js)
+app/
+
+# Generated 3D assets
+outputs/
+
+# Pinokio runtime artifacts
+logs/
+ENVIRONMENT
+
+# Auto-generated agent-guide copies dropped in by Pinokio
+CLAUDE.md
+GEMINI.md
+QWEN.md
+
+__pycache__/
+*.pyc
+
+# HF/torch/gradio caches + the per-app HF token (machine-specific, never commit)
+cache/
+.claude/settings.local.json

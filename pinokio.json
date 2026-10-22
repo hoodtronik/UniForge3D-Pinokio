@@ -1,0 +1,8 @@
+{
+  "title": "UniForge3D",
+  "description": "Generate complete textured 3D assets (GLB) from sparse, unposed multi-view images. Joint 3D reconstruction + generation built on TRELLIS.2 and VGGT, with a Gradio web UI. Native Windows install using prebuilt CUDA wheels.",
+  "icon": "icon.png",
+  "platform": ["win32"],
+  "arch": ["x64"],
+  "gpu": ["nvidia"]
+}
